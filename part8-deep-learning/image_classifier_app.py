@@ -6,15 +6,18 @@ from tensorflow.keras.preprocessing import image
 from footer_utils import load_footer
 
 # Load the model
-model = tf.keras.models.load_model('image_classifier.keras')
+import os
+file_path = os.path.abspath("image_classifier.keras")
+print("Loading model from:", file_path)  # Debugging the path
+model = tf.keras.models.load_model(file_path)
 
 # Define function to predict
 def predict_image(img):
-    # Preprocess the image (resize, scale, etc.)
-    img = img.resize((64, 64))  # Resize to the input size expected by the model
+    # Preprocess the image
+    img = img.resize((64, 64))
     img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
-    img_array /= 255.0  # Normalize if needed
+    img_array = np.expand_dims(img_array, axis=0)
+    img_array /= 255.0
 
     # Get prediction
     prediction = model.predict(img_array)
